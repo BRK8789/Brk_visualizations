@@ -3,6 +3,30 @@
 <link rel="stylesheet" href="visualPages.css">
 <title> Data Structure Visualization by Dr.BRK </title>
 <link rel="shortcut icon" href="favicon.ico" />
+<style>
+  table{
+    border: 1px solid black;
+  }
+
+  #table_centered {
+    /* margin-left: 250px; */
+  display: block;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height for vertical centering */
+}
+
+  h3{
+    text-align: center;
+  }
+  /* tr{
+    border: 1px solid black;
+  } */
+
+  td{
+    border: 1px solid black;
+  }
+</style>
 </head>
 <body>
 
@@ -22,13 +46,16 @@
 
 <div class="content">
 
-
-Currently, we have visualizations for the following data structures
-and algorithms:
-
+<h4 style="text-align: center;">Currently, we have visualizations for the following data structures
+and algorithms:</h4>
+<hr>
+<div id="table_centered">
+<table>
+<tr>
+  <td>
 <ul>
   <br>
- <li> Basics </li>
+ <h3> Basics </h3>
  <ul>
   <li> <a href = "Basics\stack\stack.html">Stack Visualization</a></li>
  <li> <a href = "Basics\Stackarray\StackArray.html">Stack:  Array Implementation</a> </li>
@@ -41,15 +68,23 @@ and algorithms:
  
  </ul>
  <br>
- <li> Recursion </li>
+</td>
+<td>
+  <br>
+ <h3> Recursion </h3>
  <ul>
  <li> <a href = "Recursion/Factorial/RecFact.html">Factorial</a> </li>
  <li><a href = "Recursion/RecRev/RecReverse.html">Reversing a String</a> </li>
  <li><a href = "Recursion/RecQueens/RecQueens.html">N-Queens Problem</a> </li>
  </ul>
- <br>
-<li> Indexing </li>  
+<br>
+</td>
+</tr>
 
+<tr>
+<td>
+  <br>
+  <h3> Indexing </h3>
 <ul>  
 <li> <a href = "Indexing/BinLinSearch/Search.html">Binary and Linear Search (of sorted list)</a> </li>
 <li> <a href = "Indexing/BST/BST.html">Binary Search Trees</a> </li>
@@ -66,7 +101,10 @@ and algorithms:
 <li> <a href = "Indexing/BPlusTree/BPlusTree.html">B+ Trees</a></li>
 </ul>
 <br>
-<li> Sorting </li>
+</td>
+<td>
+  <br>
+<h3> Sorting </h3>
 <ul>
 <li> <a href = "Sorting/CompareSort/ComparisonSort.html">Comparison Sorting</a> 
 <ul>
@@ -85,7 +123,13 @@ and algorithms:
 <li> <a href = "Sorting/HeapSort/HeapSort.html">Heap Sort</a>  </li>
 </ul> 
 <br>
-<li> Heap-like Data Structures </li>
+</td>
+</tr>
+
+<tr>
+<td>
+  <br>
+<h3> Heap-like Data Structures </h3>
 <ul>
 <li> <a href = "Heap/Heaps/Heap.html">Heaps</a> </li>
 <li> <a href = "Heap/BionomialQueue/BinomialQueue.html">Binomial Queues</a> </li>
@@ -94,7 +138,10 @@ and algorithms:
 <li> <a href = "Heap/Heaps(Skew)/SkewHeap.html">Skew Heaps</a> </li>
 </ul>
 <br>
-<li> Graph Algorithms </li>
+</td>
+<td>
+  <br>
+<h3> Graph Algorithms </h3>
 <ul>
 <li> <a href = "GraphAlgorithms/BFS/BFS.html">Breadth-First Search</a> </li>
 <li> <a href = "GraphAlgorithms/DFS/DFS.html">Depth-First Search</a> </li>
@@ -105,19 +152,25 @@ and algorithms:
 <li> <a href = "GraphAlgorithms/TOPOSortDFS/TopoSortDFS.html">Topological Sort (Using DFS) </a> </li>
 <li> <a href = "GraphAlgorithms/Floyd/Floyd.html">Floyd-Warshall (all pairs shortest paths)</a> </li>
 <li> <a href = "GraphAlgorithms/Kruskals/Kruskal.html">Kruskal Minimum Cost Spanning Tree Algorithm</a></li>
-
 </ul>
 <br>
+</td>
+</tr>
 
-<li> Dynamic Programming </li>
+<tr>
+<td>
+  <br>
+<h3> Dynamic Programming </h3>
 <ul>
 <li> <a href = "DynamicProgramming/DPF/DPFib.html">Calculating nth Fibonacci number</a></li>
 <li> <a href = "DynamicProgramming/DPCHange/DPChange.html">Making Change</a></li>
 <li> <a href = "DynamicProgramming/DPLCS/DPLCS.html">Longest Common Subsequence</a></li>
 </ul>
 <br>
-
-<li> Geometric Algorithms</li>
+</td>
+<td>
+  <br>
+<h3> Geometric Algorithms </h3>
 
 <!-- <li> B-Trees -->
 
@@ -131,8 +184,13 @@ and algorithms:
 
 </ul>
 <br>
+</td>
+</tr>
 
-<li> Others ...  </li>
+<tr>
+  <td>
+    <br>
+  <h3> Others </h3>
 
 <!-- <li> B-Trees -->
 
@@ -145,10 +203,14 @@ and algorithms:
 <br>
  </ul>
  <br>
-<hr>
-
+</td>
+</tr>
 </div>
-<div class="footer" style="display: flex;"> <a href="https://rahul6158.github.io/portfolio/portfolio/">BTR </a> </div>
+ <hr>
+ 
+</table>
+</div>
+<!-- <div class="footer" style="display: flex;"> <a href="https://rahul6158.github.io/portfolio/portfolio/">BTR </a> </div> -->
 
 </div>
 
