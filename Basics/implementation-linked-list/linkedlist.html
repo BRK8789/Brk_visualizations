@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linked List with RAM Representation</title>
     <style>
-        body {
+                body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -39,7 +39,7 @@
         }
 
         #header h1 {
-            color: #4CAF50;
+            color: darkcyan;
             font-size: 36px;
         }
 
@@ -190,7 +190,12 @@
         </div>
         <div id="inputSection">
             <input type="text" id="elementInput" placeholder="Enter element">
-            <button onclick="addElement()">Add Element</button>
+            <button onclick="addElement()">Add</button>
+            <input type="text" id="searchInput" placeholder="Search element">
+            <button onclick="searchNode()">Search</button>
+            <input type="text" id="deleteInput" placeholder="Delete element">
+            <button onclick="deleteNode()">Delete </button>
+            <button onclick="clearLinkedList()">Clear Linked List</button>
         </div>
         <div id="headContainer">
             <div class="headNode" id="headNode">Head: None</div>
@@ -207,11 +212,13 @@
         const ramContainer = document.getElementById('ramContainer');
         const linkedListContainer = document.getElementById('linkedListContainer');
         const elementInput = document.getElementById('elementInput');
+        const searchInput = document.getElementById('searchInput');
+        const deleteInput = document.getElementById('deleteInput');
         const headNode = document.getElementById('headNode');
         const totalRamSize = 40;
         let ram = Array(totalRamSize).fill(null).map(() => ({
             data: null,
-            address: Math.floor(100 + Math.random() * 900)
+            address: Math.floor(100 + Math.random() * 900) // Improved addressing
         }));
         let linkedList = [];
 
@@ -288,6 +295,83 @@
                     linkedListContainer.appendChild(arrow);
                 }
             });
+        }
+
+        function deleteNode() {
+            const value = deleteInput.value.trim();
+            if (value === '') {
+                alert('Please enter a value to delete!');
+                return;
+            }
+
+            const index = linkedList.findIndex(node => node.data === value);
+            if (index === -1) {
+                alert('Node not found!');
+                return;
+            }
+
+            ram.forEach(block => {
+                if (block.data === value) block.data = null;
+            });
+
+            if (index > 0) {
+                linkedList[index - 1].next = linkedList[index].next;
+            }
+            linkedList.splice(index, 1);
+
+            if (linkedList.length === 0) {
+                headNode.textContent = 'Head: None';
+            } else {
+                headNode.textContent = `Head: ${linkedList[0].data} (Address: ${linkedList[0].address})`;
+            }
+
+            initializeRam();
+            drawLinkedList();
+        }
+
+        function searchNode() {
+            const value = searchInput.value.trim();
+            if (value === '') {
+                alert('Please enter a value to search!');
+                return;
+            }
+
+            const index = linkedList.findIndex(node => node.data === value);
+            if (index === -1) {
+                alert('Node not found!');
+                return;
+            }
+
+            const nodeElements = document.querySelectorAll('.node');
+            nodeElements.forEach(node => node.style.border = '2px solid #007bff');
+            nodeElements[index].style.border = '5px solid red';
+
+            const ramBlocks = document.querySelectorAll('.ramBlock');
+            ramBlocks.forEach(block => block.style.border = '2px solid #007bff');
+            const ramIndex = ram.findIndex(block => block.data === value);
+            ramBlocks[ramIndex].style.border = '5px solid red';
+        }
+
+        function clearLinkedList() {
+            linkedList = [];
+            ram.forEach(block => block.data = null);
+            headNode.textContent = 'Head: None';
+            initializeRam();
+            drawLinkedList();
+        }
+
+        function saveState() {
+            const state = {
+                linkedList,
+                ram
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "linked_list_state.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
         }
 
         initializeRam();
