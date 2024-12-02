@@ -3,44 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stack Using Linked List Visualization</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Linked List with RAM Representation</title>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         #container {
-            width: auto; /* Allow dynamic width */
-            max-width: 80%; /* Set a maximum width */
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
             margin: auto;
             background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            gap: 30px;
+        }
+
+        #header {
+            text-align: center;
+        }
+
+        #header h1 {
+            color: #4CAF50;
+            font-size: 36px;
+        }
+
+        #inputSection {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #inputSection input {
+            padding: 10px;
+            font-size: 18px;
+            width: 250px;
+            margin-right: 10px;
+        }
+
+        #inputSection button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #inputSection button:hover {
+            background-color: #218838;
+        }
+
+        #headContainer {
+            text-align: center;
+        }
+
+        .headNode {
+            display: inline-block;
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #linkedListContainer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .node {
+            display: flex;
+            width: 200px;
+            height: 80px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .node > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+            background: linear-gradient(45deg, #007bff, #6610f2);
+        }
+
+        .node > .next {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 2px;
+            background-color: #007bff;
+            position: relative;
+        }
+
+        .arrow:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 8px solid #007bff;
+        }
+
+        #ramContainer {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 20px;
+            background: #fdfdfd;
+            padding: 10px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .ramBlock {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #007bff;
+            font-size: 18px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .ramBlock.allocated {
+            background-color: rgba(144, 238, 144, 0.6);
+            color: black;
+        }
+
+        .ramBlock .data {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .ramBlock .address {
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
         }
     </style>
 </head>
-<body onload="init();" class="VisualizationMainPage">
+<body>
     <div id="container">
-        <div id="header">  
-            <h1>Stack (Linked List Implementation)</h1>
+        <div id="header">
+            <h1>Linked List with RAM Representation</h1>
         </div>
-        
-        <div id="mainContent"> 
-            <div id="algoControlSection">
-                <table id="AlgorithmSpecificControls">
-                    <tr>
-                        <td><button onclick="push()">Push</button></td>
-                        <td><button onclick="pop()">Pop</button></td>
-                    </tr>
-                </table> 
-            </div>
-            <canvas id="canvas" width="1000" height="500"></canvas>
-            <div id="generalAnimationControlSection">
-                <table id="GeneralAnimationControls">  
-                    <!-- General animation controls can be added here -->
-                </table>        
-            </div>
-        </div> <!-- mainContent -->
-        
-      
-    </div><!-- container -->
-    <script src="script.js"></script>
+        <div id="inputSection">
+            <input type="text" id="elementInput" placeholder="Enter element">
+            <button onclick="addElement()">Add Element</button>
+        </div>
+        <div id="headContainer">
+            <div class="headNode" id="headNode">Head: None</div>
+        </div>
+        <div id="linkedListContainer">
+            <!-- Linked List Nodes will be dynamically generated here -->
+        </div><br><br>
+        <h2 style="text-align: center;">RAM Representation</h2>
+        <div id="ramContainer">
+            <!-- RAM blocks will be dynamically updated here -->
+        </div>
+    </div>
+    <script>
+        const ramContainer = document.getElementById('ramContainer');
+        const linkedListContainer = document.getElementById('linkedListContainer');
+        const elementInput = document.getElementById('elementInput');
+        const headNode = document.getElementById('headNode');
+        const totalRamSize = 40;
+        let ram = Array(totalRamSize).fill(null).map(() => ({
+            data: null,
+            address: Math.floor(100 + Math.random() * 900)
+        }));
+        let linkedList = [];
+
+        function initializeRam() {
+            ramContainer.innerHTML = '';
+            ram.forEach(block => {
+                const ramBlock = document.createElement('div');
+                ramBlock.className = 'ramBlock';
+                if (block.data !== null) {
+                    ramBlock.classList.add('allocated');
+                    ramBlock.innerHTML = `
+                        <div class="data">Data: ${block.data}</div>
+                        <div class="address">${block.address}</div>
+                    `;
+                } else {
+                    ramBlock.innerHTML = `
+                        <div>Empty</div>
+                        <div class="address">${block.address}</div>
+                    `;
+                }
+                ramContainer.appendChild(ramBlock);
+            });
+        }
+
+        function addElement() {
+            const value = elementInput.value.trim();
+            if (value === '') {
+                alert('Please enter a valid value!');
+                return;
+            }
+
+            const availableBlocks = ram.filter(block => block.data === null);
+            if (availableBlocks.length === 0) {
+                alert('RAM is full! Cannot add more elements.');
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * availableBlocks.length);
+            const selectedBlock = availableBlocks[randomIndex];
+
+            selectedBlock.data = value;
+
+            linkedList.push({
+                data: value,
+                next: null,
+                address: selectedBlock.address
+            });
+
+            if (linkedList.length > 1) {
+                linkedList[linkedList.length - 2].next = selectedBlock.address;
+            }
+
+            headNode.textContent = `Head: ${linkedList[0].data} (Address: ${linkedList[0].address})`;
+
+            initializeRam();
+            drawLinkedList();
+
+            elementInput.value = '';
+        }
+
+        function drawLinkedList() {
+            linkedListContainer.innerHTML = '';
+            linkedList.forEach((node, index) => {
+                const nodeElement = document.createElement('div');
+                nodeElement.className = 'node';
+                nodeElement.innerHTML = `
+                    <div>${node.data}</div>
+                    <div class="next">${node.next ?? 'null'}</div>
+                `;
+                linkedListContainer.appendChild(nodeElement);
+
+                if (index < linkedList.length - 1) {
+                    const arrow = document.createElement('div');
+                    arrow.className = 'arrow';
+                    linkedListContainer.appendChild(arrow);
+                }
+            });
+        }
+
+        initializeRam();
+    </script>
 </body>
 </html>
