@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority Queue</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f7f8fc, #e2ecf6);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #container {
+            background: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        #inputSection {
+            margin: 20px 0;
+        }
+
+        #inputSection input,
+        #inputSection button {
+            padding: 12px 16px;
+            font-size: 14px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #inputSection input {
+            width: 200px;
+        }
+
+        #inputSection button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        #inputSection button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #circle {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border-radius: 50%;
+            border: 2px dashed #007bff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .queueBlock {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(to right, #e3f2fd, #64b5f6);
+            color: #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .queueBlock.empty {
+            background: #e9ecef;
+            border: 1px dashed #ccc;
+            color: #aaa;
+        }
+
+        .queueBlock:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .pointer {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            color: red;
+            text-transform: uppercase;
+        }
+
+        .front {
+            transform: translateY(-20px);
+        }
+
+        .rear {
+            transform: translateY(20px);
+        }
+
+        #messageBox {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        #messageBox.success {
+            color: green;
+        }
+
+        #messageBox.error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Priority Queue Visualization</h1>
+        <div id="inputSection">
+            <input type="number" id="queueSize" placeholder="Queue size (3-15)" min="3" max="15">
+            <button onclick="initializeQueue()">Initialize</button>
+        </div>
+        <div id="inputSection">
+            <input type="text" id="elementInput" placeholder="Element to enqueue">
+            <input type="number" id="priorityInput" placeholder="Priority (1-10)" min="1" max="10">
+            <button onclick="enqueue()">Enqueue</button>
+            <button onclick="dequeue()">Dequeue</button>
+            <button onclick="clearQueue()">Clear Queue</button>
+        </div>
+        <div id="circle"></div>
+        <div id="messageBox"></div>
+    </div>
+
+    <script>
+        const circle = document.getElementById("circle");
+        const messageBox = document.getElementById("messageBox");
+
+        let queue = [];
+        let size = 0;
+
+        function initializeQueue() {
+            size = parseInt(document.getElementById("queueSize").value);
+            if (isNaN(size) || size < 3 || size > 15) {
+                displayMessage("Enter a valid queue size between 3 and 15!", "error");
+                return;
+            }
+
+            queue = [];
+            drawQueue();
+            displayMessage(`Queue initialized with size ${size}.`, "success");
+        }
+
+        function enqueue() {
+            const element = document.getElementById("elementInput").value.trim();
+            const priority = parseInt(document.getElementById("priorityInput").value);
+            if (!element || isNaN(priority) || priority < 1 || priority > 10) {
+                displayMessage("Please enter a valid element and priority between 1 and 10!", "error");
+                return;
+            }
+
+            const newElement = { value: element, priority: priority };
+            queue.push(newElement);
+
+            // Sort queue by priority (higher priority comes first)
+            queue.sort((a, b) => b.priority - a.priority);
+
+            drawQueue();
+            displayMessage(`Enqueued: ${element} with priority ${priority}`, "success");
+        }
+
+        function dequeue() {
+            if (queue.length === 0) {
+                displayMessage("Queue is empty!", "error");
+                return;
+            }
+
+            const dequeued = queue.shift(); // Remove the element with the highest priority
+            drawQueue();
+            displayMessage(`Dequeued: ${dequeued.value}`, "success");
+        }
+
+        function clearQueue() {
+            queue = [];
+            drawQueue();
+            displayMessage("Queue cleared!", "success");
+        }
+
+        function drawQueue() {
+            circle.innerHTML = "";
+            const angleIncrement = (2 * Math.PI) / size;
+            const radius = 130;
+
+            // Ensure the queue is drawn in the order of priority (highest to lowest)
+            queue.forEach((element, index) => {
+                const angle = index * angleIncrement - Math.PI / 2;
+                const x = Math.cos(angle) * radius + 150 - 30;
+                const y = Math.sin(angle) * radius + 150 - 30;
+
+                const block = document.createElement("div");
+                block.classList.add("queueBlock");
+                block.style.left = `${x}px`;
+                block.style.top = `${y}px`;
+                block.textContent = `${element.value} (${element.priority})`;
+
+                circle.appendChild(block);
+            });
+        }
+
+        function displayMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = type;
+        }
+    </script>
+</body>
+
+</html>
